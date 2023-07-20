@@ -10,7 +10,7 @@ const UpdateCartButtons = ({ pizzaID }) => {
   const dispatch = useDispatch();
   const quantityInCart = useSelector(getQuantityInCartByID(pizzaID));
   return (
-    <div className='space-x-3'>
+    <div className=' flex items-center gap-3'>
       <Button
         type={'round'}
         onButtonClick={() => dispatch(decreaseQuantity(pizzaID))}
@@ -18,6 +18,7 @@ const UpdateCartButtons = ({ pizzaID }) => {
       >
         -
       </Button>
+      {quantityInCart}
       <Button
         type={'round'}
         onButtonClick={() => dispatch(increaseQuantity(pizzaID))}

@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux';
 import Button from '../../ui/Button';
 import { formatCurrency } from '../../utils/helpers';
-import { deleteFromCart } from './cartSlice';
+import { deleteFromCart, getQuantityInCartByID } from './cartSlice';
 import UpdateCartButtons from '../../ui/UpdateCartButtons';
 
 function CartItem({ item }) {
@@ -9,6 +9,7 @@ function CartItem({ item }) {
   console.log(item);
 
   const dispatch = useDispatch();
+  const quantityInCart = getQuantityInCartByID(id);
   return (
     <li className='p-4 sm:flex sm:justify-between'>
       <p className='mb-0'>
