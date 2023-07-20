@@ -4,6 +4,7 @@ import { createOrder } from '../../services/apiRestaurant';
 import { redirect } from 'react-router-dom';
 import Button from '../../ui/Button';
 import FormInput from '../../ui/FormInput';
+import { useSelector } from 'react-redux';
 // https://uibakery.io/regex-library/phone-number
 const isValidPhone = (str) =>
   /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/.test(
@@ -44,23 +45,35 @@ function CreateOrder() {
   //getting the data returned by the action function in the function
   const formErrors = useActionData();
 
+  const userName = useSelector((store) => store.user.userName);
   return (
-    <div className='p-5'>
-      <h2>Ready to order? Let's go!</h2>
+    <div className='px-4 py-4 flex flex-col items-center h-[600] justify-center'>
+      <h2 className='mb-10 font-semibold text-xl'>Ready to order? Let's go!</h2>
 
-      <Form method='POST'>
+      <Form method='POST' className='space-y-4 w-72 items-center'>
         <div>
           <label>First Name</label>
           <div>
-            <input type='text' name='customer' required className='input' />
+            <input
+              type='text'
+              name='customer'
+              required
+              className='input'
+              defaultValue={userName}
+            />
           </div>
         </div>
 
-        <div>
+        <div className=''>
           <label>Phone number</label>
           <div>
             <input type='tel' name='phone' required className='input' />
           </div>
+          {formErrors && (
+            <div className='text-sm text-red-700 bg-red-300 rounded-md p-2 mt-2'>
+              {formErrors?.phone}
+            </div>
+          )}
         </div>
 
         <div>
@@ -69,9 +82,8 @@ function CreateOrder() {
             <FormInput type='address' name='address' required />
           </div>
         </div>
-        {formErrors?.phone}
 
-        <div>
+        <div className='mt-4'>
           <input
             type='checkbox'
             name='priority'
@@ -80,11 +92,11 @@ function CreateOrder() {
             // value={withPriority}
             // onChange={(e) => setWithPriority(e.target.checked)}
           />
-          <label htmlFor='priority'>Want to yo give your order priority?</label>
+          <label htmlFor='priority'>Want to give your order priority?</label>
         </div>
         <input hidden name='cart' value={JSON.stringify(cart)} />
         <div>
-          <Button disabled={isSubmitting}>
+          <Button disabled={isSubmitting} type={'primary'}>
             {isSubmitting ? 'Submitting your order...' : 'Order now'}
           </Button>
         </div>
@@ -110,8 +122,7 @@ export async function action({ request }) {
   const errors = {};
   //checking if the correct phone number is provided;
   if (!isValidPhone(order.phone)) {
-    errors.phone =
-      'Please provide a valid phone number to make some orders. You know, orders need to be handled properly. You wouldnot want your pizza to be delivered elsewhere. ';
+    errors.phone = 'Please provide a valid phone number to make some orders. ';
     return errors;
   }
 
