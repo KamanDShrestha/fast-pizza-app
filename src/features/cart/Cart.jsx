@@ -4,12 +4,15 @@ import LinkButton from '../../ui/LinkButton';
 import CartItem from './CartItem';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearCart } from './cartSlice';
+import EmptyCart from './EmptyCart';
 
 function Cart() {
   const cart = useSelector((store) => store.cart.cart);
   const userName = useSelector((store) => store.user.userName);
   const dispatch = useDispatch();
   console.log(cart);
+
+  if (!cart.length) return <EmptyCart />;
   return (
     <div className='px-4 '>
       <LinkButton
