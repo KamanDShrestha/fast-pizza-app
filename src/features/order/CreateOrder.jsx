@@ -49,14 +49,6 @@ function CreateOrder() {
 
   //getting the address from the geolocation
 
-  const fetcher = useFetcher();
-
-  useEffect(() => {
-    if (!fetcher.data && fetcher.state === 'idle') {
-      fetcher.load('/menu');
-    }
-  }, [fetcher]);
-
   console.log(address);
   if (!cart.length) return <EmptyCart />;
 
